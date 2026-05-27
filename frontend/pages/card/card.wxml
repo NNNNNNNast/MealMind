@@ -1,0 +1,101 @@
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient" style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action">
+      <text class="cuIcon-back text-white"  bindtap="goBack" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="content text-white" style="padding-top: 19rpx;">{{recipe.title}}</view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+
+<image src="{{recipe.imageUrl}}" mode="aspectFill" class="response"></image>
+
+<view class="bg-white padding flex justify-between">
+  <text class="text-black text-bold text-xxl">{{recipe.title}}</text>
+  <view class="cu-tag bg-white round padding-sm flex align-center" bindtap="toggleFavorite">
+    <text class="cuIcon-{{isFavorite ? 'favorfill' : 'favor'}} {{isFavorite ? 'text-red' : 'text-gray'}}" style="font-size: 50rpx;"></text>
+  </view>
+</view>
+
+<view class="bg-white grid col-4 text-center padding-bottom-sm">
+  <view class="padding-xs">
+    <view class="cuIcon-time text-orange text-xxl"></view>
+    <view class="text-sm text-gray margin-top-xs">{{recipe.cookTime}}</view>
+  </view>
+  <view class="padding-xs">
+    <view class="cuIcon-rank text-blue text-xxl"></view>
+    <view class="text-sm text-gray margin-top-xs">{{recipe.difficultyLevel}}</view>
+  </view>
+  <view class="padding-xs">
+    <view class="cuIcon-hotfill text-green text-xxl"></view>
+    <view class="text-sm text-gray margin-top-xs">{{recipe.cookingMethod}}</view>
+  </view>
+  <view class="padding-xs">
+    <view class="cuIcon-tagfill text-red text-xxl"></view>
+    <view class="text-sm text-gray margin-top-xs">{{recipe.cuisine}}</view>
+  </view>
+</view>
+
+<view class="cu-card no-card margin-sm radius article  shadow-lg">
+  <view class="cu-item padding-bottom">
+
+    <view class="flex align-center justify-between padding-sm shadow shadow-lg">
+      <view class="flex align-center">
+        <text class="cuIcon-edit text-red margin-right-xs" style="font-size: 40rpx;"></text>
+        <text class="text-bold text-xl">食材清单</text>
+      </view>
+    </view>
+
+    <view class="cu-card menu-avatar">
+      <view class="cu-item ingredient-item solids-bottom  " wx:for="{{recipe.ingredients}}" wx:key="id" data-index="{{index}}" bindtap="toggleIngredient" hover-class="bg-grey light" hover-stay-time="100" style="min-height: 80rpx;">
+        <view class="flex justify-between align-center " style="padding: 30rpx 0; width: 100%;">
+          <view class="flex justify-between align-center">
+            <text class="text-lg {{item.checked ? 'text-through text-grey' : ''}}">{{item[0]}}</text>
+            <text class="cuIcon-check text-green margin-left-sm" wx:if="{{item.checked}}" style="font-size: 36rpx;"></text>
+          </view>
+
+          <text class="text-lg {{item.checked ? 'text-grey text-through' : 'text-red'}}">{{item[1]}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-card article no-card margin-sm radius">
+  <view class="cu-item">
+    <view class="padding">
+      <view class="flex align-center margin-bottom-xl">
+        <text class="cuIcon-sort text-red margin-right-xs" style="font-size: 40rpx;"></text>
+        <text class="text-bold text-xl">制作步骤</text>
+      </view>
+
+      <view>
+        <view class="flex margin-bottom" wx:for="{{recipe.steps}}" wx:key="index" data-index="{{index}}" bindtap="toggleSteps">
+          <view class="cu-tag round bg-orange margin-right-sm" style="width: 48rpx; height: 48rpx; display: flex; align-items: center; justify-content: center;">
+            <text class="text-white text-sm ">{{index + 1}}</text>
+          </view>
+          <view class="flex-sub">
+            <text class="text-content {{item[1] ? 'text-through text-grey' : ''}}">{{item[0]}}</text>
+            <text class="cuIcon-check text-green margin-left-sm" wx:if="{{item[1]}}" style="font-size: 36rpx;"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="cu-card article no-card margin-sm radius overflow-hidden">
+  <view class="cu-item">
+    <view class="bg-img relative" style="height: 414rpx; width: 100%; background-size: cover; background-position: center;">
+      
+      <view class="padding" style="bottom: 30rpx; left: 0; right: 0; ">
+        <view class="flex align-center margin-bottom">
+          <text class="cuIcon-creative text-black margin-right-xs" style="font-size: 40rpx;"></text>
+          <text class="text-bold text-xl text-black">{{'小贴士'}}</text>
+        </view>
+        <text class="text-blcak text-xl margin-top-xs padding-left">{{recipe.tips}}</text>
+      </view>
+      
+    </view>
+  </view>
+</view>

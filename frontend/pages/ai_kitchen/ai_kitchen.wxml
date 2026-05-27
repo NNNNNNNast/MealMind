@@ -1,0 +1,94 @@
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient"
+    style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action">
+      <text class="cuIcon-back text-white" bindtap="goBack" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="content text-white" style="padding-top: 19rpx;">AI 厨房</view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+
+<view class="fullscreen-chat"
+  style="margin-top: {{CustomBar}}px; height: calc(100vh - {{CustomBar}}px); display: flex; flex-direction: column; background: #f5f5f5;">
+
+
+  <scroll-view class="flex-sub" scroll-y="true" scroll-top="{{CustomBar}}" scroll-into-view="msg-{{message.length-1}}"
+    enhanced="{{true}}" show-scrollbar="{{false}}" style="flex: 1; min-height: 0;">
+
+    <view class="padding-sm" style="padding-left: 20rpx; padding-right: 20rpx;">
+      <block wx:for="{{message}}" wx:key="index">
+        <view class="cu-chat" id="msg-{{index}}" style="margin-bottom: 20rpx;">
+
+          <view class="cu-item" wx:if="{{item.type === 'robot'}}">
+            <view class="cu-avatar radius bg-yellow" style="width: 70rpx; height: 70rpx;">🤖</view>
+            <view class="main" style="margin-left: 20rpx;">
+              <view class="content shadow bg-white" style="padding: 16rpx 20rpx;">
+                <rich-text nodes="{{item.html}}"></rich-text>
+              </view>
+              <view class="date text-gray text-sm" style="margin-top: 8rpx;">{{item.time || ''}}</view>
+            </view>
+          </view>
+          <view class="cu-item self" wx:if="{{item.type === 'user'}}">
+            <view class="main" style="margin-right: 20rpx;">
+              <view class="content shadow bg-yellow" style="padding: 16rpx 20rpx;">
+                <text class="text-white">{{item.content}}</text>
+              </view>
+              <view class="date text-gray text-sm text-right" style="margin-top: 8rpx;">{{item.time || ''}}</view>
+            </view>
+            <view class="cu-avatar radius bg-yellow" style="width: 70rpx; height: 70rpx;">🎈</view>
+          </view>
+
+        </view>
+      </block>
+
+      <view class="cu-chat"
+        wx:if="{{isThinking && (!message[message.length-1] || !message[message.length-1].isStreaming)}}"
+        style="margin-bottom: 20rpx;">
+        <view class="cu-item">
+          <view class="cu-avatar radius bg-yellow" style="width: 70rpx; height: 70rpx;">🤖</view>
+          <view class="main" style="margin-left: 20rpx;">
+            <view class="content shadow bg-white">
+              <view class="flex align-center">
+                <text class="text-gray">思考中</text>
+                <text class="cuIcon-loading text-yellow margin-left-sm"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+</view>
+</scroll-view>
+
+<view class="bg-white padding solid-top">
+
+  <view class="flex align-center">
+    <view class="flex-sub margin-right-sm">
+      <input style="height: 70rpx; background: #f5f5f5; border-radius: 16rpx; padding: 0 20rpx; font-size: 28rpx;"
+        type="text" placeholder="输入消息..." maxlength="1000" placeholder-style="color: #aaa;" value="{{submitValue}}"
+        bindinput="onInput" bindconfirm="onConfirm" confirm-type="send" disabled="{{isThinking}}" />
+    </view>
+
+    <button class="cu-btn bg-yellow round shadow-blur {{!submitValue ? 'opacity' : ''}}"
+      style="width: 100rpx; height: 70rpx; line-height: 70rpx; padding: 0;" bindtap="onConfirm"
+      disabled="{{isThinking || !submitValue}}" loading="{{isThinking}}">
+      <text class="cuIcon-send text-white text-bold"></text>
+    </button>
+  </view>
+
+  <view class="flex margin-top-sm justify-between">
+    <button class="cu-btn bg-gray round sm flex-sub margin-right-xs" bindtap="onIngredientScan">
+      <text class="cuIcon-camera text-green margin-right-xs"></text>
+      <text class="text-sm">就地取材</text>
+    </button>
+    <button class="cu-btn bg-gray round sm flex-sub margin-right-xs" bindtap="onNutritionScan">
+      <text class="cuIcon-attentionforbid text-orange margin-right-xs"></text>
+      <text class="text-sm">成分识别</text>
+    </button>
+    <button class="cu-btn bg-gray round sm flex-sub" bindtap="onDishRecord">
+      <text class="cuIcon-appreciate text-blue margin-right-xs"></text>
+      <text class="text-sm">菜品识别</text>
+    </button>
+  </view>
+</view>
+</view>

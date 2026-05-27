@@ -1,0 +1,12 @@
+.search-result-item {
+  transition: all 0.3s ease;
+}
+
+.search-result-item:active {
+  transform: scale(0.98);
+  background-color: #f5f5f5;
+}
+
+.cu-list.menu-avatar > .cu-item {
+  padding-right: 30rpx;
+}

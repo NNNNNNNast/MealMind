@@ -1,0 +1,430 @@
+/* pages/ai/kitchen/recipe_records/recipe_records.wxss */
+page {
+  background: linear-gradient(180deg, #ff7a45 0%, #faad14 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+
+.container {
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-top: var(--custom-bar-height, 0);
+}
+
+page {
+  --custom-bar-height: 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 16rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.loading-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.loading-spinner {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  opacity: 0.9;
+}
+
+.error-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.error-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.error-text {
+  font-size: 28rpx;
+  opacity: 0.9;
+  margin-bottom: 30rpx;
+}
+
+.retry-btn {
+  background: #fff;
+  color: #ff7a45;
+  font-weight: bold;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.retry-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+
+.empty-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 0;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+  opacity: 0.8;
+}
+
+.empty-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 16rpx;
+}
+
+.empty-desc {
+  font-size: 28rpx;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.records-list {
+  width: 100%;
+}
+
+.record-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.1);
+  animation: cardFadeIn 0.6s ease forwards;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transform: translateY(20rpx);
+  opacity: 0;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.record-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 122, 69, 0) 0%,
+    rgba(255, 122, 69, 0.1) 50%,
+    rgba(255, 122, 69, 0) 100%
+  );
+  transition: left 0.5s ease;
+}
+
+.record-card:hover::before {
+  left: 100%;
+}
+
+.record-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 5rpx 15rpx rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.record-image-wrapper {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+  background: #f5f5f5;
+}
+
+.record-image {
+  width: 100%;
+  height: 100%;
+}
+
+.record-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.record-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.record-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.record-time {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.4;
+}
+
+.record-desc {
+  font-size: 22rpx;
+  color: #666;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.record-arrow {
+  font-size: 40rpx;
+  color: #ccc;
+  margin-left: 16rpx;
+}
+
+.detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: modalFadeIn 0.4s ease forwards;
+}
+
+.detail-content {
+  background: #fff;
+  border-radius: 32rpx;
+  width: 85%;
+  max-height: 80vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalSlideUp 0.4s ease forwards;
+  transform: translateY(50rpx) scale(0.9);
+  opacity: 0;
+}
+
+@keyframes modalFadeIn {
+  from {
+    background: rgba(0, 0, 0, 0);
+  }
+  to {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(50rpx) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.detail-close {
+  position: absolute;
+  top: 20rpx;
+  right: 24rpx;
+  width: 56rpx;
+  height: 56rpx;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: #666;
+  z-index: 10;
+}
+
+.detail-header {
+  padding: 40rpx 40rpx 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.detail-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8rpx;
+  line-height: 1.3;
+}
+
+.detail-time {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.4;
+}
+
+.detail-image {
+  width: 100%;
+  height: 300rpx;
+  object-fit: cover;
+}
+
+.detail-scroll {
+  max-height: 400rpx;
+  padding: 30rpx 40rpx;
+}
+
+.detail-text {
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  letter-spacing: 0.5rpx;
+}
+
+@media screen and (max-width: 375px) {
+  .title {
+    font-size: 42rpx;
+  }
+  
+  .subtitle {
+    font-size: 24rpx;
+  }
+  
+  .record-card {
+    padding: 20rpx;
+  }
+  
+  .record-image-wrapper {
+    width: 100rpx;
+    height: 100rpx;
+  }
+  
+  .record-name {
+    font-size: 28rpx;
+  }
+  
+  .record-time {
+    font-size: 22rpx;
+  }
+  
+  .record-desc {
+    font-size: 20rpx;
+  }
+  
+  .empty-icon {
+    font-size: 100rpx;
+  }
+  
+  .empty-title {
+    font-size: 32rpx;
+  }
+  
+  .empty-desc {
+    font-size: 24rpx;
+  }
+  
+  .detail-content {
+    width: 90%;
+  }
+  
+  .detail-title {
+    font-size: 32rpx;
+  }
+  
+  .detail-time {
+    font-size: 22rpx;
+  }
+  
+  .detail-text {
+    font-size: 24rpx;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 600rpx;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .record-card {
+    padding: 30rpx;
+  }
+  
+  .detail-content {
+    width: 70%;
+  }
+}

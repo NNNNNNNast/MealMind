@@ -1,0 +1,8 @@
+{
+  "usingComponents": {},
+  "navigationBarTitleText": "AI厨房社区",
+  "enablePullDownRefresh": true,
+	"navigationStyle": "custom",
+  "backgroundTextStyle": "dark",
+  "backgroundColor": "#f5f5f5"
+}

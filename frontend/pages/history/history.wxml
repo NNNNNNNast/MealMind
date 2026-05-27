@@ -1,0 +1,73 @@
+<view class="cu-custom">
+  <view class="cu-bar fixed custom-nav-gradient shadow" style="height: {{CustomBar}}px; padding-top: {{StatusBar}}px;">
+    <view class="action" bindtap="goBack">
+      <text class="cuIcon-back text-white"></text>
+    </view>
+    <view class="content text-white">浏览记录</view>
+    <view class="action" bindtap="clearAllHistory" wx:if="{{list.length > 0}}">
+      <text class="cuIcon-trash text-white"></text>
+    </view>
+  </view>
+</view>
+
+<view class="padding" style="margin-top: {{CustomBar}}px;">
+  <view class="loading" wx:if="{{loading}}">
+    <view class="cu-load load-modal">
+      <view class="cuIcon-emojifill text-green"></view>
+      <view class="text-gray">加载中...</view>
+    </view>
+  </view>
+  
+  <view class="empty-state" wx:elif="{{list.length === 0}}">
+    <view class="cu-load load-modal">
+      <view class="cuIcon-time text-gray"></view>
+      <view class="text-gray">暂无浏览记录</view>
+      <button class="cu-btn bg-green light margin-top" bindtap="goBack">返回首页</button>
+    </view>
+  </view>
+  
+  <view class="history-list" wx:else>
+    <view 
+      class="bg-white radius margin-bottom"
+      wx:for="{{list}}" 
+      wx:key="recipeId"
+      bindtap="goToRecipe"
+      data-id="{{item.recipeId}}"
+    >
+      <view class="padding">
+        <view class="flex align-center">
+          <image 
+            wx:if="{{item.imageUrl}}" 
+            src="{{item.imageUrl}}" 
+            mode="aspectFill" 
+            style="width: 120rpx; height: 120rpx; border-radius: 12rpx; margin-right: 20rpx;"
+          ></image>
+          <view wx:else class="bg-gray" style="width: 120rpx; height: 120rpx; border-radius: 12rpx; margin-right: 20rpx; display: flex; align-items: center; justify-content: center;">
+            <text class="cuIcon-pic text-white" style="font-size: 50rpx;"></text>
+          </view>
+          
+          <view class="flex flex-direction flex-sub">
+            <text class="text-black text-bold text-lg">{{item.title}}</text>
+          
+            <view class="flex align-center margin-top-xs">
+              <text class="cuIcon-time text-gray margin-right-xs" style="font-size: 24rpx;"></text>
+              <text class="text-gray text-sm">{{item.formattedTime || item.viewTime}}</text>
+            </view>
+          </view>
+        
+          <view class="action" catchtap="deleteHistory" data-id="{{item.recipeId}}">
+            <text class="cuIcon-close text-gray" style="font-size: 40rpx;"></text>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <view class="text-center padding" wx:if="{{loadingMore}}">
+      <text class="text-gray">加载中...</text>
+    </view>
+
+    <view class="text-center padding" wx:elif="{{!hasMore && list.length > 0}}">
+      <text class="text-gray text-sm">没有更多了</text>
+    </view>
+  </view>
+</view>

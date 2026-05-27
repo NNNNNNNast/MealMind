@@ -1,0 +1,86 @@
+<!--pages/ai/kitchen/recipe_records/recipe_records.wxml-->
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed bg-gradual-orange"
+    style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action">
+      <text class="cuIcon-back text-white" bindtap="goBack" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+
+<view class="container" style="margin-top: {{CustomBar}}px; min-height: calc(100vh - {{CustomBar}}px);">
+  <view class="header">
+    <text class="title">📋 识别记录</text>
+    <text class="subtitle">查看您的菜品识别历史</text>
+  </view>
+
+  <view class="loading-section" wx:if="{{isLoading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view class="error-section" wx:elif="{{hasError}}">
+    <view class="error-icon">⚠️</view>
+    <text class="error-text">{{errorMsg}}</text>
+    <button class="retry-btn" bindtap="loadRecords">重新加载</button>
+  </view>
+
+  <view class="empty-section" wx:elif="{{records.length === 0}}">
+    <view class="empty-icon">📋</view>
+    <text class="empty-title">暂无识别记录</text>
+    <text class="empty-desc">快去识别菜品，记录您的美食之旅吧！</text>
+  </view>
+
+  <view class="records-list" wx:else>
+    <view
+      class="record-card"
+      wx:for="{{records}}"
+      wx:key="id"
+      data-index="{{index}}"
+      bindtap="onRecordTap"
+    >
+      <view class="record-image-wrapper">
+        <image
+          class="record-image"
+          src="{{item.imageData || item.imageUrl || '/images/default-food.png'}}"
+          mode="aspectFill"
+          lazy-load="true"
+        />
+      </view>
+
+      <view class="record-info">
+        <text class="record-name">{{item.dishName}}</text>
+        <view class="record-meta">
+          <text class="record-time">{{item.formattedTime}}</text>
+          <text class="record-desc" wx:if="{{item.content && item.content.length > 20}}">{{item.content.substring(0, 20)}}...</text>
+        </view>
+      </view>
+
+
+      <view class="record-arrow">›</view>
+    </view>
+  </view>
+
+  <view class="detail-modal" wx:if="{{showDetail}}" bindtap="onCloseDetail">
+    <view class="detail-content" catchtap="stopPropagation">
+      <view class="detail-close" bindtap="onCloseDetail">×</view>
+
+      <view class="detail-header">
+        <text class="detail-title">{{selectedRecord.dishName}}</text>
+        <text class="detail-time">{{selectedRecord.formattedTime}}</text>
+      </view>
+
+      <image
+        class="detail-image"
+        src="{{selectedRecord.imageData || selectedRecord.imageUrl}}"
+        mode="aspectFit"
+        wx:if="{{selectedRecord.imageData || selectedRecord.imageUrl}}"
+      />
+
+      <scroll-view class="detail-scroll" scroll-y="true">
+        <text class="detail-text" user-select="true">{{selectedRecord.content}}</text>
+      </scroll-view>
+    </view>
+  </view>
+</view>

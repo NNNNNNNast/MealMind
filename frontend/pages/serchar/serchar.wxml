@@ -1,0 +1,35 @@
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient" style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action">
+      <text class="cuIcon-back text-white"  bindtap="goBack" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="content text-white" style="padding-top: 19rpx;">{{keyword}}</view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+
+<scroll-view scroll-y style="margin-top: {{CustomBar}}px; height: calc(100vh - {{CustomBar}}px);" wx:if="{{searchResults.length > 0}}">
+  <view class="cu-list menu-avatar" style="margin-top: 10px;">
+    <view class="cu-item" wx:for="{{searchResults}}" wx:key="id" bindtap="getDetail" data-id="{{item.recipeId}}" style="display: flex; align-items: center; padding: 20rpx 30rpx;">
+      <image class="cu-avatar round lg" src="{{item.imageUrl}}" mode="aspectFill" lazy-load="true" style="width: 100rpx; height: 100rpx; border-radius: 50%; flex-shrink: 0; margin-right: 20rpx;"></image>
+      
+      <view style="flex: 1; display: flex; align-items: center; overflow: hidden; margin-left:60px">
+        <text class="text-cut" style="font-size: 32rpx; font-weight: bold; max-width: 400rpx; margin-right: 16rpx;">{{item.title}}</text>
+      </view>
+      
+      <view class="action" style="flex-shrink: 0; margin-left: 10rpx;">
+        <text class="cuIcon-right text-gray"></text>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+
+<view class="cu-card article no-card" wx:if="{{searchResults.length === 0}}">
+    <view class="cu-item">
+      <view class="padding flex flex-direction align-center" style="margin-top: 100px;">
+        <text class="cuIcon-search text-gray" style="font-size: 120rpx;"></text>
+        <text class="text-gray margin-top">暂无搜索结果</text>
+        <text class="text-gray text-sm margin-top-sm">换个关键词试试吧</text>
+      </view>
+    </view>
+  </view>

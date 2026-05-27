@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/card/card",
+    "pages/serchar/serchar",
+    "pages/category/category",
+    "pages/status/status",
+    "pages/test/test",
+    "pages/ai_kitchen/ai_kitchen",
+    "pages/community/community",
+    "pages/in_food/in_food",
+    "pages/ingredient_analysis/ingredient_analysis",
+    "pages/recipe_analysis/recipe_analysis",
+    "pages/recipe_records/recipe_records",
+    "pages/profile/profile",
+    "pages/edit/edit",
+    "pages/history/history",
+    "pages/favorite/favorite",
+    "pages/man/man",
+    "pages/post/post",
+    "pages/publish/publish"
+  ],
+  "window": {
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#39b54a",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页",
+        "iconPath": "/img/首页.png",
+        "selectedIconPath": "/img/首页_alter.png"
+      },
+      {
+        "pagePath": "pages/status/status",
+        "text": "健康中心",
+        "iconPath": "/img/健康中心.png",
+        "selectedIconPath": "/img/健康中心_alter.png"
+      },
+      {
+        "pagePath": "pages/community/community",
+        "text": "社区",
+        "iconPath": "/img/社区.png",
+        "selectedIconPath": "/img/社区_alter2.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "/img/我的.png",
+        "selectedIconPath": "/img/我的_alter.png"
+      }
+    ]
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom",
+    "bao-wecom-circle": "bao-wecom/circle/index",
+    "van-calendar": "@vant/weapp/calendar/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-slider": "@vant/weapp/slider/index",
+    "van-picker": "@vant/weapp/picker/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-toast": "@vant/weapp/toast/index"
+  }
+}

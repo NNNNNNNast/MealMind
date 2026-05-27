@@ -1,0 +1,27 @@
+page {
+  height: 100%;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.main-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.chat-area {
+  overflow: hidden;
+}
+
+.feature-cards,
+.tip-swiper,
+.cu-bar,
+.padding-sm,
+.bg-white {
+  overflow: hidden;
+}
+
+scroll-view {
+  box-sizing: border-box;
+}

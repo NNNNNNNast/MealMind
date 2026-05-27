@@ -1,0 +1,171 @@
+<view class="cu-custom">
+  <view class="cu-bar fixed custom-nav-gradient shadow" style="height: {{CustomBar}}px; padding-top: {{StatusBar}}px;">
+    <view class="content text-white" style="padding-top: 19rpx;">个人主页</view>
+    <view class="action"></view>
+  </view>
+</view>
+
+<scroll-view scroll-y class="page-container" style="margin-top:{{CustomBar}}px;">
+
+  <view class="user-card" bindtap="goToEdit">
+    <view class="user-avatar">
+      <image src="{{avatar}}" mode="aspectFill"></image>
+    </view>
+    <view class="user-info">
+      <text class="user-name">{{nickname}}</text>
+      <text class="user-edit">点击编辑资料</text>
+    </view>
+    <view class="user-arrow">
+      <text class="cuIcon-right"></text>
+    </view>
+  </view>
+  <view class="stats-card" wx:if="{{isLogin}}">
+    <view class="stat-item" bindtap="goToMyPosts">
+      <text class="stat-number">{{postCount || 0}}</text>
+      <text class="stat-label">帖子</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goToLikes">
+      <text class="stat-number">{{totalLikes || 0}}</text>
+      <text class="stat-label">获赞</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goToFollowing">
+      <text class="stat-number">{{followingCount || 0}}</text>
+      <text class="stat-label">关注</text>
+    </view>
+  </view>
+
+  <view class="menu-card">
+    <view class="menu-item" bindtap="goToHistory">
+      <view class="menu-left">
+        <view class="menu-icon history">
+          <text class="cuIcon-time"></text>
+        </view>
+        <text class="menu-text">浏览记录</text>
+      </view>
+      <view class="menu-right">
+        <text class="cuIcon-right"></text>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="goToFavorite">
+      <view class="menu-left">
+        <view class="menu-icon favorite">
+          <text class="cuIcon-favorfill"></text>
+        </view>
+        <text class="menu-text">收藏食谱</text>
+      </view>
+      <view class="menu-right">
+        <text class="cuIcon-right"></text>
+      </view>
+    </view>
+
+  </view>
+
+  <view class="tabs-container" wx:if="{{isLogin}}">
+    <view class="tabs">
+      <view class="tab-item {{activeTab == 'posts' ? 'active' : ''}}" data-tab="posts" bindtap="switchTab">
+        <text>我的帖子</text>
+        <view class="tab-indicator" wx:if="{{activeTab == 'posts'}}"></view>
+      </view>
+      <view class="tab-item {{activeTab == 'following' ? 'active' : ''}}" data-tab="following" bindtap="switchTab">
+        <text>我的关注</text>
+        <view class="tab-indicator" wx:if="{{activeTab == 'following'}}"></view>
+      </view>
+    </view>
+  </view>
+  <view class="content-container" wx:if="{{isLogin && activeTab == 'posts'}}">
+    <view class="loading-container" wx:if="{{postsLoading && userPosts.length == 0}}">
+      <view class="loading-icon"></view>
+      <text>加载中...</text>
+    </view>
+
+    <view class="empty-container" wx:elif="{{userPosts.length == 0 && !postsLoading}}">
+      <image src="/img/empty-posts.png" mode="aspectFit" class="empty-image"></image>
+      <text class="empty-text">暂无发布的帖子</text>
+      <text class="empty-tip">发布你的第一篇帖子吧</text>
+    </view>
+
+    <view class="posts-list" wx:else>
+      <view class="post-card" wx:for="{{userPosts}}" wx:key="postId" bindtap="goToPostDetail"
+        data-postid="{{item.postId}}">
+        <view class="post-header">
+          <image class="post-avatar" src="{{item.avatar || '/img/default-avatar.png'}}" mode="aspectFill"></image>
+          <view class="post-author">
+            <text class="post-name">{{item.nickname || '用户'}}</text>
+          </view>
+        </view>
+
+
+        <view class="post-body">
+          <text class="post-title">{{item.title}}</text>
+          <text class="post-content">{{item.content}}</text>
+        </view>
+
+        <view class="post-img" wx:if="{{item.imageUrlsArray && item.imageUrlsArray.length > 0}}">
+          <image wx:for="{{item.imageUrlsArray}}" wx:key="index" src="{{item}}" mode="aspectFill" class="post-image">
+          </image>
+        </view>
+
+        <view class="post-footer">
+          <view class="post-stats">
+            <text class="cuIcon-goodfill"></text>
+            <text>{{item.likeCount || 0}}</text>
+          </view>
+          <view class="post-stats">
+            <text class="cuIcon-message"></text>
+            <text>{{item.commentCount || 0}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="load-more" wx:if="{{hasMorePosts && userPosts.length > 0}}" bindtap="loadMorePosts">
+        <text class="text-gray">{{postsLoading ? '加载中...' : '加载更多'}}</text>
+      </view>
+
+      <view class="end-line" wx:elif="{{!hasMorePosts && userPosts.length > 0}}">
+        <view class="line"></view>
+        <text class="text-gray">已经到底了</text>
+        <view class="line"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-container" wx:if="{{isLogin && activeTab == 'following'}}">
+    <view class="loading-container" wx:if="{{followingLoading && followingUsers.length == 0}}">
+      <view class="loading-icon"></view>
+      <text>加载中...</text>
+    </view>
+
+    <view class="empty-container" wx:elif="{{followingUsers.length == 0 && !followingLoading}}">
+      <image src="/img/empty-following.png" mode="aspectFit" class="empty-image"></image>
+      <text class="empty-text">暂无关注用户</text>
+      <text class="empty-tip">去发现更多有趣的人吧</text>
+    </view>
+
+    <view class="following-list" wx:else>
+      <view class="following-card" wx:for="{{followingUsers}}" wx:key="userId" bindtap="goToUserProfile"
+        data-userid="{{item.userId}}">
+        <image class="following-avatar" src="{{item.avatar || '/img/default-avatar.png'}}" mode="aspectFill"></image>
+        <view class="following-info">
+          <text class="following-name">{{item.nickname}}</text>
+        </view>
+        <view class="following-arrow">
+          <text class="cuIcon-right"></text>
+        </view>
+      </view>
+
+      <view class="load-more" wx:if="{{hasMoreFollowing && followingUsers.length > 0}}" bindtap="loadMoreFollowing">
+        <text class="text-gray">{{followingLoading ? '加载中...' : '加载更多'}}</text>
+      </view>
+
+      <view class="end-line" wx:elif="{{!hasMoreFollowing && followingUsers.length > 0}}">
+        <view class="line"></view>
+        <text class="text-gray">已经到底了</text>
+        <view class="line"></view>
+      </view>
+    </view>
+  </view>
+
+</scroll-view>

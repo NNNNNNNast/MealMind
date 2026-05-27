@@ -1,0 +1,687 @@
+  <view class="page-container">
+
+    <view class="cu-custom">
+      <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient"
+        style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+        <view class="action">
+          <text class="cuIcon-settingsfill text-white margin-left" bindtap="showHealthPopup"
+            style="font-size: 40rpx; margin-left:1rpx;"></text>
+        </view>
+        <view class="action" style="width: 100rpx;"></view>
+      </view>
+    </view>
+
+    <view class="nav-header" style="margin-top:{{CustomBar}}px;">
+      <view class="title-wrap">
+        <text class="title-text">早安，{{nickname}}</text>
+        <text class="cuIcon-back icon-s" bindtap="prevDay"></text>
+        <text class="title-date" bindtap="onDisplay">{{selDate.month}}月{{selDate.day}}日</text>
+        <text class="cuIcon-right icon-s" bindtap="nextDay"></text>
+      </view>
+    </view>
+
+      <view class="main-dashboard card-shadow {{showSliderPopup ? 'highlight-ctx' : ''}}">
+        <view class="edit-btn" bindtap="showPopup">
+          <text class="cuIcon-edit"></text>
+        </view>
+
+        <view class="dash-top">
+          <view class="stat-item side">
+            <text class="stat-label">🍴 已摄入</text>
+            <text class="stat-val">{{kcal}}</text>
+          </view>
+          <view class="main-circle-wrapper">
+            <view class="main-circle">
+              <view class="circle-bg"></view>
+              <view class="circle-progress" style="--progress: {{bkcal}};"></view>
+              <view class="circle-inner">
+                <text class="big-num">{{remainingKcal}}</text>
+                <text class="small-label">剩余</text>
+              </view>
+            </view>
+          </view>
+          <view class="stat-item side">
+            <text class="stat-label">健康指数</text>
+            <view class="health-index-wrapper">
+              <text class="health-index-num">{{healthIndex}}</text>
+              <text class="health-index-level">{{healthLevel}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="nutri-grid">
+          <view class="nutri-item">
+            <view class="n-head">
+              <view class="n-dot green"></view>
+              <text class="n-name">蛋白质</text>
+            </view>
+            <view class="n-bar-bg"><view class="n-bar-fill green" style="width:{{bprotein + '%'}};"></view></view>
+            <view class="n-val">{{protein}} / {{proteinGoal}}克</view>
+          </view>
+          <view class="nutri-item">
+            <view class="n-head">
+              <view class="n-dot orange"></view>
+              <text class="n-name">碳水</text>
+            </view>
+            <view class="n-bar-bg"><view class="n-bar-fill orange" style="width:{{bcarb + '%'}};"></view></view>
+            <view class="n-val">{{carb}} / {{carbGoal}}克</view>
+          </view>
+          <view class="nutri-item">
+            <view class="n-head">
+              <view class="n-dot yellow"></view>
+              <text class="n-name">脂肪</text>
+            </view>
+            <view class="n-bar-bg"><view class="n-bar-fill yellow" style="width:{{bfat + '%'}};"></view></view>
+            <view class="n-val">{{fat}} / {{fatGoal}}克</view>
+          </view>
+        </view>
+      </view>
+
+    <view class="page-container">
+  <view class="cu-custom">
+    <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient"
+      style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+      <view class="action">
+        <text class="cuIcon-settingsfill text-white margin-left" bindtap="showHealthPopup"
+          style="font-size: 40rpx; margin-left:1rpx;"></text>
+      </view>
+      <view class="action" style="width: 100rpx;"></view>
+    </view>
+  </view>
+
+  <view class="tool-section">
+    <view class="tool-card tool-card-full" bindtap="goAI">
+      <image src="/img/健康.png" mode="widthFix" class="tool-icon"></image>
+      <text class="tool-text">AI 厨房</text>
+    </view>
+  </view>
+
+  <view class="meal-section">
+    <view class="meal-card meals-combined-card">
+      <view class="card-header">
+        <text class="card-title">📋 今日餐食</text>
+        <text class="card-subtitle">总摄入：{{meals.breakfast.calories + meals.lunch.calories + meals.dinner.calories + meals.snack.calories}} 大卡</text>
+      </view>
+      
+      <view class="meals-grid">
+        <view class="meal-item" bindtap="recordMeal" data-meal-type="breakfast">
+          <view class="meal-icon-bg">🍞</view>
+          <view class="meal-info-compact">
+            <text class="meal-name">早餐</text>
+            <text class="meal-kcal">{{meals.breakfast.calories}}/{{meals.breakfast.target}}</text>
+          </view>
+          <view class="meal-record-dot">+</view>
+        </view>
+        
+        <view class="meal-item" bindtap="recordMeal" data-meal-type="lunch">
+          <view class="meal-icon-bg">🍱</view>
+          <view class="meal-info-compact">
+            <text class="meal-name">午餐</text>
+            <text class="meal-kcal">{{meals.lunch.calories}}/{{meals.lunch.target}}</text>
+          </view>
+          <view class="meal-record-dot">+</view>
+        </view>
+        <view class="meal-item" bindtap="recordMeal" data-meal-type="dinner">
+          <view class="meal-icon-bg">🍽️</view>
+          <view class="meal-info-compact">
+            <text class="meal-name">晚餐</text>
+            <text class="meal-kcal">{{meals.dinner.calories}}/{{meals.dinner.target}}</text>
+          </view>
+          <view class="meal-record-dot">+</view>
+        </view>
+        
+
+        <view class="meal-item" bindtap="recordMeal" data-meal-type="snack">
+          <view class="meal-icon-bg">🍪</view>
+          <view class="meal-info-compact">
+            <text class="meal-name">加餐</text>
+            <text class="meal-kcal">{{meals.snack.calories}}/{{meals.snack.target}}</text>
+          </view>
+          <view class="meal-record-dot">+</view>
+        </view>
+      </view>
+      
+      <view class="food-list-expandable" wx:if="{{meals.breakfast.foods.length > 0 || meals.lunch.foods.length > 0 || meals.dinner.foods.length > 0 || meals.snack.foods.length > 0}}">
+        <view class="food-section" wx:if="{{meals.breakfast.foods.length > 0}}">
+          <view class="food-section-title">早餐</view>
+          <view class="food-item-compact" wx:for="{{meals.breakfast.foods}}" wx:key="index">
+            <text class="food-name">{{item.name}}</text>
+            <text class="food-cal">{{item.calories}}大卡</text>
+          </view>
+        </view>
+        
+        <view class="food-section" wx:if="{{meals.lunch.foods.length > 0}}">
+          <view class="food-section-title">午餐</view>
+          <view class="food-item-compact" wx:for="{{meals.lunch.foods}}" wx:key="index">
+            <text class="food-name">{{item.name}}</text>
+            <text class="food-cal">{{item.calories}}大卡</text>
+          </view>
+        </view>
+        
+        <view class="food-section" wx:if="{{meals.dinner.foods.length > 0}}">
+          <view class="food-section-title">晚餐</view>
+          <view class="food-item-compact" wx:for="{{meals.dinner.foods}}" wx:key="index">
+            <text class="food-name">{{item.name}}</text>
+            <text class="food-cal">{{item.calories}}大卡</text>
+          </view>
+        </view>
+        
+        <view class="food-section" wx:if="{{meals.snack.foods.length > 0}}">
+          <view class="food-section-title">加餐</view>
+          <view class="food-item-compact" wx:for="{{meals.snack.foods}}" wx:key="index">
+            <text class="food-name">{{item.name}}</text>
+            <text class="food-cal">{{item.calories}}大卡</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="meal-card">
+      <view class="meal-header">
+        <view class="meal-info">
+          <view class="meal-icon">🏃</view>
+          <view class="meal-txt">
+            <text class="m-name">已消耗</text>
+            <text class="m-kcal">{{meals.exercise.calories}} 大卡</text>
+          </view>
+        </view>
+        <view class="record-btn" bindtap="recordExercise">记录</view>
+      </view>
+      
+      <view class="exercise-list" wx:if="{{meals.exercise.foods.length > 0}}">
+        <view class="exercise-item" wx:for="{{meals.exercise.foods}}" wx:key="index">
+          <view class="exercise-item-info">
+            <view class="exercise-item-header">
+              <text class="exercise-name">{{item.name}}</text>
+              <text class="exercise-cal">{{item.calories}}大卡</text>
+            </view>
+            <view class="exercise-item-detail">
+              <text wx:if="{{item.duration}}">{{item.duration}}分钟</text>
+              <text wx:if="{{item.intensity}}" class="margin-left-sm">{{item.intensity === 'low' ? '低强度' : item.intensity === 'high' ? '高强度' : '中强度'}}</text>
+              <text wx:if="{{item.category}}" class="margin-left-sm">{{item.category}}</text>
+            </view>
+            <view class="exercise-desc" wx:if="{{item.description}}">{{item.description}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="meal-card exercise-suggestion-card">
+      <view class="meal-header">
+        <view class="meal-info">
+          <view class="meal-icon">💡</view>
+          <view class="meal-txt">
+            <text class="m-name">今日运动建议</text>
+            <text class="m-kcal">{{exerciseSuggestion.text || 'AI 正在为你生成个性化运动建议...'}}</text>
+          </view>
+        </view>
+        <view class="refresh-btn" bindtap="refreshExerciseSuggestion">
+          <text class="cuIcon-refresh"></text>
+        </view>
+      </view>
+      <view class="suggestion-content" wx:if="{{exerciseSuggestion.suggestions.length > 0}}">
+        <view class="suggestion-item" wx:for="{{exerciseSuggestion.suggestions}}" wx:key="index">
+          <view class="suggestion-icon">🏃‍♂️</view>
+          <view class="suggestion-tag">推荐</view>
+          <view class="suggestion-info">
+            <text class="s-name">{{item.name}}</text>
+            <text class="s-detail">{{item.duration}}分钟 | {{item.calories}}大卡</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<van-calendar show="{{ show }}" min-date="{{ minDate }}" max-date="{{ maxDate }}" default-date="{{ defaultDate }}" bind:close="onClose" bind:confirm="onSelect" show-confirm="{{false}}"/>
+
+<van-popup show="{{ showSliderPopup }}" position="bottom" round bind:close="PopupClose" custom-style="height: 45%; padding: 32rpx">
+    <view class="flex flex-direction">
+      <view class="flex flex-direction margin-top-sm">
+        <view class="flex justify-between padding-tb-sm">
+          <text class="text-black" style="margin-bottom:5px">卡路里</text>
+          <text class="text-black">{{sliderValue[1]}}Kcal/{{calorieGoal}}Kcal</text>
+        </view>
+        <van-slider 
+          value="{{ sliderValue[1] }}" 
+          data-index="1" 
+          min="{{ pmin[1] }}" 
+          max="{{ pmax[1] }}" 
+          step="{{ step }}"
+          active-color="#ee0a24" 
+          bind:drag="onSliderDrag"
+          bind:change="onSliderChange" 
+        />
+      </view>
+
+      <view class="flex flex-direction margin-top-sm">
+        <view class="flex justify-between padding-tb-sm">
+          <text class="text-black" style="margin-bottom:5px">蛋白质</text>
+          <text class="text-black">{{sliderValue[2]}}g/{{proteinGoal}}g</text>
+        </view>
+        <van-slider 
+          value="{{ sliderValue[2] }}" 
+          data-index="2" 
+          min="{{ pmin[2] }}" 
+          max="{{ pmax[2] }}" 
+          step="{{ step }}"
+          active-color="#39b54a" 
+          bind:drag="onSliderDrag"
+          bind:change="onSliderChange" 
+        />
+      </view>
+
+      <view class="flex flex-direction margin-top-sm">
+        <view class="flex justify-between padding-tb-sm">
+          <text class="text-black" style="margin-bottom:5px">碳水</text>
+          <text class="text-black">{{sliderValue[3]}}g/{{carbGoal}}g</text>
+        </view>
+        <van-slider 
+          value="{{ sliderValue[3] }}" 
+          data-index="3" 
+          min="{{ pmin[3] }}" 
+          max="{{ pmax[3] }}" 
+          step="{{ step }}"
+          active-color="#0081ff" 
+          bind:drag="onSliderDrag"
+          bind:change="onSliderChange" 
+        />
+      </view>
+
+      <view class="flex flex-direction margin-top-sm">
+        <view class="flex justify-between padding-tb-sm">
+          <text class="text-black" style="margin-bottom:5px">脂肪</text>
+          <text class="text-black">{{sliderValue[4]}}g/{{fatGoal}}g</text>
+        </view>
+        <van-slider 
+          value="{{ sliderValue[4] }}" 
+          data-index="4" 
+          min="{{ pmin[4] }}" 
+          max="{{ pmax[4] }}" 
+          step="{{ step }}"
+          active-color="#fbbd08" 
+          bind:drag="onSliderDrag"
+          bind:change="onSliderChange" 
+        />
+      </view>
+    </view>
+  </van-popup>
+
+  <van-popup show="{{ showHealthPopup }}" position="bottom" round root-portal z-index="2000" bind:close="onCloseHealthPopup" custom-style="height: 90%; padding: 0" close-on-click-overlay="{{false}}">
+    <view class="health-popup bg-white">
+      <view class="cu-bar bg-white solid-bottom">
+        <view class="action">
+          <text class="cuIcon-close text-gray" bindtap="onCloseHealthPopup"></text>
+        </view>
+        <view class="content text-bold">健康档案</view>
+        <view class="action">
+          <text class="text-green" bindtap="saveHealthProfile">保存</text>
+        </view>
+      </view>
+
+      <scroll-view scroll-y style="height: calc(100% - 100rpx);">
+        
+        <view class="section-block">
+          <view class="section-header bg-blue-light">
+            <text class="cuIcon-info text-blue margin-right-sm"></text>
+            <text class="text-bold text-blue">身体基础</text>
+          </view>
+          
+          <view class="section-content padding">
+            <view class="cu-form-group margin-top">
+              <view class="title">年龄</view>
+              <input type="number" placeholder="请输入年龄" bindinput="onAgeInput" value="{{formData.age}}"></input>
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">性别</view>
+              <view class="flex">
+                <radio-group class="flex" bindchange="onGenderChange">
+                  <label class="radio margin-right-lg" wx:for="{{genderOptions}}" wx:key="value">
+                    <radio value="{{item.value}}" checked="{{formData.gender == item.value}}" color="#07c160" />
+                    <text class="margin-left-sm">{{item.label}}</text>
+                  </label>
+                </radio-group>
+              </view>
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">身高</view>
+              <input type="digit" placeholder="cm" bindinput="onHeightInput" value="{{formData.height}}"></input>
+              <view class="margin-left-sm">cm</view>
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">体重</view>
+              <input type="digit" placeholder="kg" bindinput="onWeightInput" value="{{formData.weight}}"></input>
+              <view class="margin-left-sm">kg</view>
+            </view>
+            
+            <view class="bmi-card margin-top padding radius bg-blue-light">
+              <view class="flex justify-between align-center">
+                <view>
+                  <text class="text-lg">📊BMI:</text>
+                  <text class="text-lg text-bold text-blue">{{bmiValue}}</text>
+                </view>
+                <view>
+                  <text class="text-lg">🟢体重状况:</text>
+                  <text class="text-lg text-bold text-blue">{{weightStatusText}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="section-block">
+          <view class="section-header bg-green-light">
+            <text class="cuIcon-medal text-green margin-right-sm"></text>
+            <text class="text-bold text-green">饮食偏好</text>
+          </view>
+          
+          <view class="section-content padding">
+            <view class="cu-form-group margin-top">
+              <view class="title">饮食目标</view>
+              <input type="text" placeholder="例：3 个月内减重 10 斤" bindinput="onDietGoalInput" value="{{formData.dietGoal}}"></input>
+            </view>
+            <view class="flex flex-wrap padding-lr margin-bottom-sm">
+              <view class="cu-tag bg-blue light margin-xs" catchtap="setDietGoal" data-value="减重">减重</view>
+              <view class="cu-tag bg-green light margin-xs" catchtap="setDietGoal" data-value="增肌">增肌</view>
+              <view class="cu-tag bg-orange light margin-xs" catchtap="setDietGoal" data-value="控制血糖">控制血糖</view>
+              <view class="cu-tag bg-purple light margin-xs" catchtap="setDietGoal" data-value="改善消化">改善消化</view>
+              <view class="cu-tag bg-red light margin-xs" catchtap="setDietGoal" data-value="提高精力">提高精力</view>
+            </view>
+
+            <view class="cu-form-group align-start">
+              <view class="title">口味偏好</view>
+              <view class="flex flex-wrap justify-end" style="width: 70%;">
+                <view wx:for="{{tasteTagsWithStatus}}" wx:key="value"
+                  class="cu-tag {{item.active ? 'bg-green light' : 'bg-gray light'}} margin-xs" catchtap="toggleTaste"
+                  data-value="{{item.value}}">
+                  {{item.label}}
+                </view>
+              </view>
+            </view>
+            <view class="cu-form-group align-start">
+              <view class="title">忌口/过敏</view>
+              <textarea class="food-input" placeholder="例：不吃猪肉，海鲜过敏，讨厌香菜" bindinput="onAvoidFoodsInput" value="{{formData.avoidFoods}}" maxlength="-1" style="width: 70%;"></textarea>
+            </view>
+            <view class="form-tip text-red">
+              <text class="cuIcon-warn"></text> AI 推荐将完全排除以上食物
+            </view>
+          </view>
+        </view>
+
+        <view class="section-block">
+          <view class="section-header bg-orange-light">
+            <text class="cuIcon-heart text-orange margin-right-sm"></text>
+            <text class="text-bold text-orange">健康习惯</text>
+          </view>
+          
+          <view class="section-content padding">
+            <view class="cu-form-group margin-top align-start">
+              <view class="title">慢性病</view>
+              <textarea class="food-input" placeholder="例：高血压 5 年，血糖有点高但没确诊" bindinput="onChronicDiseaseInput" value="{{formData.chronicDisease}}" maxlength="-1" style="width: 70%;"></textarea>
+            </view>
+            <view class="form-tip">
+              💡 示例：高血压 3 年、2 型糖尿病、血脂异常
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">吸烟状态</view>
+              <view class="flex">
+                <radio-group class="flex" bindchange="onSmokingStatusChange">
+                  <label class="radio margin-right-lg">
+                    <radio value="0" checked="{{formData.smokingStatus == 0}}" color="#07c160" />
+                    <text class="margin-left-sm">不吸</text>
+                  </label>
+                  <label class="radio">
+                    <radio value="1" checked="{{formData.smokingStatus == 1}}" color="#07c160" />
+                    <text class="margin-left-sm">吸烟</text>
+                  </label>
+                </radio-group>
+              </view>
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">运动频率</view>
+              <input type="text" placeholder="例：每周跑步 3 次，周末打球" bindinput="onExerciseFrequencyInput" value="{{formData.exerciseFrequency}}"></input>
+            </view>
+            <view class="flex flex-wrap padding-lr margin-bottom-sm">
+              <view class="cu-tag bg-cyan light margin-xs" catchtap="setExerciseFrequency" data-value="几乎不运动">几乎不运动</view>
+              <view class="cu-tag bg-cyan light margin-xs" catchtap="setExerciseFrequency" data-value="每周 1-2 次">每周 1-2 次</view>
+              <view class="cu-tag bg-cyan light margin-xs" catchtap="setExerciseFrequency" data-value="每周 3-5 次">每周 3-5 次</view>
+              <view class="cu-tag bg-cyan light margin-xs" catchtap="setExerciseFrequency" data-value="每天运动">每天运动</view>
+            </view>
+          </view>
+        </view>
+
+        <view class="section-block">
+          <view class="section-header bg-purple-light">
+            <text class="cuIcon-activity text-purple margin-right-sm"></text>
+            <text class="text-bold text-purple">体检数据</text>
+          </view>
+          
+          <view class="section-content padding">
+            <view class="reference-range margin-bottom padding radius bg-gray-light">
+              <view class="text-center text-gray text-sm">
+                <text class="cuIcon-info text-blue"></text> 参考范围：空腹血糖 3.9-6.1 mmol/L,血压 120/80 mmHg
+              </view>
+            </view>
+
+            <view class="cu-form-group margin-top">
+              <view class="title">收缩压</view>
+              <input type="digit" placeholder="mmHg" bindinput="onSystolicBpInput" value="{{formData.systolicBp}}"></input>
+              <view class="margin-left-sm">mmHg</view>
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">舒张压</view>
+              <input type="digit" placeholder="mmHg" bindinput="onDiastolicBpInput" value="{{formData.diastolicBp}}"></input>
+              <view class="margin-left-sm">mmHg</view>
+            </view>
+
+            <view class="cu-form-group">
+              <view class="title">空腹血糖</view>
+              <input type="digit" placeholder="mmol/L" bindinput="onFastingGlucoseInput" value="{{formData.fastingGlucose}}"></input>
+              <view class="margin-left-sm">mmol/L</view>
+            </view>
+          </view>
+        </view>
+
+
+        <view class="section-block">
+          <view class="section-header bg-red-light">
+            <text class="cuIcon-star text-red margin-right-sm"></text>
+            <text class="text-bold text-red">营养目标</text>
+          </view>
+          
+          <view class="section-content padding">
+            <view class="form-tip margin-bottom">设置你每日的营养摄入目标</view>
+            
+            <view class="nutrition-goals-grid">
+              <view class="goal-item">
+                <view class="goal-label">🔥 卡路里</view>
+                <view class="goal-input-wrap">
+                  <input type="number" class="goal-input" placeholder="0" bindinput="onCalorieGoalInput" value="{{formData.calorieGoal}}"></input>
+                  <text class="goal-unit">大卡</text>
+                </view>
+              </view>
+              
+              <view class="goal-item">
+                <view class="goal-label">🍚 碳水化合物</view>
+                <view class="goal-input-wrap">
+                  <input type="number" class="goal-input" placeholder="0" bindinput="onCarbGoalInput" value="{{formData.carbGoal}}"></input>
+                  <text class="goal-unit">克</text>
+                </view>
+              </view>
+              
+              <view class="goal-item">
+                <view class="goal-label">🥩 蛋白质</view>
+                <view class="goal-input-wrap">
+                  <input type="number" class="goal-input" placeholder="0" bindinput="onProteinGoalInput" value="{{formData.proteinGoal}}"></input>
+                  <text class="goal-unit">克</text>
+                </view>
+              </view>
+              
+              <view class="goal-item">
+                <view class="goal-label">🥑 脂肪</view>
+                <view class="goal-input-wrap">
+                  <input type="number" class="goal-input" placeholder="0" bindinput="onFatGoalInput" value="{{formData.fatGoal}}"></input>
+                  <text class="goal-unit">克</text>
+                </view>
+              </view>
+            </view>
+            
+            <view class="form-tip text-red margin-top">
+              <text class="cuIcon-info"></text> 这些目标将用于计算每日摄入百分比
+            </view>
+          </view>
+        </view>
+
+        <view class="padding text-center text-gray text-sm margin-bottom-lg padding-top">
+          <text class="cuIcon-info"></text> 这些信息将用于个性化菜谱推荐
+        </view>
+      </scroll-view>
+    </view>
+  </van-popup>
+
+  <van-popup show="{{ showMealRecordPopup }}" position="bottom" round bind:close="onCloseMealRecordPopup" custom-style="height: 40%; padding: 0">
+    <view class="meal-record-popup">
+      <view class="popup-header">
+        <text class="popup-title">记录{{currentMealType === 'breakfast' ? '早餐' : currentMealType === 'lunch' ? '午餐' : currentMealType === 'dinner' ? '晚餐' : currentMealType === 'snack' ? '加餐' : '运动'}}</text>
+        <text class="cuIcon-close text-gray" bindtap="onCloseMealRecordPopup"></text>
+      </view>
+      <view class="record-options">
+        <view class="option-item" bindtap="showTextInput">
+          <view class="option-icon">
+            <text class="option-icon-text">Aa</text>
+          </view>
+          <text class="option-text">文字描述</text>
+        </view>
+        <view class="option-item" bindtap="onDishRecord">
+          <view class="option-icon">
+            <text class="option-icon-text">📷</text>
+          </view>
+          <text class="option-text">AI识别</text>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+  <van-popup show="{{ showTextInputPopup }}" position="bottom" round bind:close="onCloseTextInputPopup" custom-style="height: 60%; padding: 32rpx">
+    <view class="text-input-popup">
+      <view class="popup-header">
+        <text class="popup-title">文字描述</text>
+        <text class="cuIcon-close text-gray" bindtap="onCloseTextInputPopup"></text>
+      </view>
+      <view class="input-section">
+        <textarea class="food-input" placeholder="请输入食物名称和数量，例如：苹果 1 个，米饭 1 碗" bindinput="onFoodInput" value="{{foodInput}}"></textarea>
+        <view class="input-hint">
+          <text>输入食物名称和数量，系统会自动计算营养成分</text>
+        </view>
+      </view>
+      <view class="popup-footer">
+        <button class="cancel-btn" bindtap="onCloseTextInputPopup">取消</button>
+        <button class="confirm-btn" bindtap="confirmFoodInput">确认</button>
+      </view>
+    </view>
+  </van-popup>
+
+  <van-popup show="{{ showExercisePopup }}" position="bottom" round bind:close="onCloseExercisePopup" custom-style="height: 60%; padding: 32rpx">
+    <view class="exercise-popup">
+      <view class="popup-header">
+        <text class="popup-title">记录运动事件</text>
+        <text class="cuIcon-close text-gray" bindtap="onCloseExercisePopup"></text>
+      </view>
+      <view class="input-section">
+        <view class="form-group">
+          <text class="form-label">运动名称</text>
+          <input type="text" placeholder="例如：跑步、游泳、篮球" bindinput="onExerciseNameInput" value="{{exerciseName}}" class="form-input"></input>
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">运动时长（分钟）</text>
+          <input type="number" placeholder="例如：30" bindinput="onExerciseDurationInput" value="{{exerciseDuration}}" class="form-input"></input>
+        </view>
+        
+        <view class="form-group">
+          <text class="form-label">运动强度</text>
+          <view class="intensity-selector">
+            <view class="intensity-tag {{intensityLevel === 'low' ? 'active' : ''}}" data-intensity="low" bindtap="onIntensityChange">低</view>
+            <view class="intensity-tag {{intensityLevel === 'medium' ? 'active' : ''}}" data-intensity="medium" bindtap="onIntensityChange">中</view>
+            <view class="intensity-tag {{intensityLevel === 'high' ? 'active' : ''}}" data-intensity="high" bindtap="onIntensityChange">高</view>
+          </view>
+        </view>
+        
+        <view class="input-hint">
+          <text>记录你完成的运动，系统会自动估算热量消耗</text>
+        </view>
+      </view>
+      <view class="popup-footer">
+        <button class="cancel-btn" bindtap="onCloseExercisePopup">取消</button>
+        <button class="confirm-btn" bindtap="confirmExerciseInput">确认</button>
+      </view>
+    </view>
+  </van-popup>
+
+  <van-popup show="{{ showFoodConfirmPopup }}" position="bottom" round bind:close="onCloseFoodConfirmPopup" custom-style="height: 70%; padding: 32rpx">
+    <view class="food-confirm-popup">
+      <view class="popup-header">
+        <text class="popup-title">确认食物数据</text>
+        <text class="cuIcon-close text-gray" bindtap="onCloseFoodConfirmPopup"></text>
+      </view>
+      
+      <view class="food-preview">
+        <view class="preview-item">
+          <text class="preview-label">食物名称</text>
+          <input class="preview-input" value="{{tempFoodData.name}}" bindinput="onTempFoodNameChange" placeholder="请输入食物名称" />
+        </view>
+        
+        <view class="preview-item">
+          <text class="preview-label">热量</text>
+          <view class="preview-input-row">
+            <input type="number" value="{{tempFoodData.calories}}" bindinput="onTempFoodCaloriesChange" class="preview-input" />
+            <text class="preview-unit">大卡</text>
+          </view>
+        </view>
+        
+        <view class="preview-item">
+          <text class="preview-label">蛋白质</text>
+          <view class="preview-input-row">
+            <input type="number" value="{{tempFoodData.protein}}" bindinput="onTempFoodProteinChange" class="preview-input" />
+            <text class="preview-unit">克</text>
+          </view>
+        </view>
+        
+        <view class="preview-item">
+          <text class="preview-label">碳水化合物</text>
+          <view class="preview-input-row">
+            <input type="number" value="{{tempFoodData.carb}}" bindinput="onTempFoodCarbChange" class="preview-input" />
+            <text class="preview-unit">克</text>
+          </view>
+        </view>
+        
+        <view class="preview-item">
+          <text class="preview-label">脂肪</text>
+          <view class="preview-input-row">
+            <input type="number" value="{{tempFoodData.fat}}" bindinput="onTempFoodFatChange" class="preview-input" />
+            <text class="preview-unit">克</text>
+          </view>
+        </view>
+        
+        <view class="preview-item">
+          <text class="preview-label">份量</text>
+          <input class="preview-input" value="{{tempFoodData.portion}}" bindinput="onTempFoodPortionChange" placeholder="例如：1 碗、1 个" />
+        </view>
+      </view>
+      
+      <view class="confirm-hint">
+        <text class="cuIcon-info"></text> 你可以修改以上数据，确保准确后再保存
+      </view>
+      
+      <view class="popup-footer">
+        <button class="cancel-btn" bindtap="onCloseFoodConfirmPopup">取消</button>
+        <button class="confirm-btn" bindtap="confirmFoodData">确认保存</button>
+      </view>
+    </view>
+  </van-popup>
+</view>

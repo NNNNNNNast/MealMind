@@ -1,0 +1,62 @@
+<view class="cu-custom">
+  <view class="cu-bar fixed custom-nav-gradient shadow" style="height: {{CustomBar}}px; padding-top: {{StatusBar}}px;">
+    <view class="action" bindtap="goBack">
+      <text class="cuIcon-back text-white"></text>
+    </view>
+    <view class="action"></view>
+  </view>
+</view>
+<view class="navbar">
+    <view class="nav-left" bindtap="goBack">
+      <text class="yp"></text>
+    </view>
+  <view class="navbar-title">发布帖子</view>
+  </view>
+
+<view class="publish-container">
+<view class="input-item">
+  <label class="label">帖子标题</label>
+  <input 
+    class="title-input" 
+    placeholder="分享你的美食经验、菜谱心得..." 
+    bindinput="onTitleInput"
+    maxlength="30"
+		placeholder-class="placeholder-top"
+  />
+</view>
+
+	<view class="textarea-item">
+  <label class="label">帖子内容</label>
+  <textarea 
+    class="textarea-content" 
+    placeholder="详细描述你的内容，比如菜谱做法、烹饪技巧、食材推荐等..." 
+    bindinput="onContentInput"
+    maxlength="1000"
+    auto-height
+    placeholder-style="text-align: left; vertical-align: top; padding-top: 10rpx;"
+  />
+	</view>
+
+  <view class="upload-item">
+    <label class="label">添加图片</label>
+    <view class="upload-box">
+      <view class="uploaded-img" wx:for="{{imgList}}" wx:key="index">
+        <image src="{{item}}" mode="aspectFill"></image>
+        <icon type="clear" size="16" bindtap="deleteImg" data-index="{{index}}"></icon>
+      </view>
+      <view class="upload-btn" wx:if="{{imgList.length < 9}}" bindtap="chooseImage">
+        <icon type="photo" size="40" color="#88c850"></icon>
+        <text class="upload-text">上传图片</text>
+      </view>
+    </view>
+  </view>
+
+  <button 
+    class="publish-btn" 
+    bindtap="submitPost"
+    disabled="{{!title || !content}}"
+    loading="{{publishing}}"
+  >
+    {{publishing ? '发布中...' : '发布帖子'}}
+  </button>
+</view>

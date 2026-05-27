@@ -1,0 +1,142 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 30rpx;
+  background: #8DCB58;
+  color: #fff;
+}
+
+
+.nav-left {
+	height: 80rpx;
+  width: 80rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.nav-left .yp {
+  display: inline-block;
+  width: 25rpx;
+	height: 25rpx;
+	border: #333 solid 10px;
+	border-width: 0 5rpx 5rpx 0;
+	transform: rotate(135deg);
+}
+
+.navbar-title {
+  flex: 1;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+  color: #fff;
+  padding-right: 40px;
+}
+.publish-container {
+  margin-top: 20px;
+  padding: 25rpx 30rpx;
+}
+
+
+.input-item, .textarea-item, .upload-item, .category-item {
+  margin-bottom: 20rpx;
+}
+.label {
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  display: block;
+}
+.input-content {
+	
+  width: 100%;
+  padding: 20rpx;
+  border: 1rpx solid #eee;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.title-input {
+	min-height: 70rpx;
+  border: 1rpx solid #eee;   
+  padding: 15rpx 20rpx;      
+  font-size: 28rpx;
+  border-radius: 8rpx;      
+	vertical-align: top;
+  
+}
+
+.placeholder-top {
+  vertical-align: top !important;
+  text-align: start !important;
+  padding-top: 0 !important;
+  line-height: 1.2 !important;
+}
+
+.textarea-content {
+  min-height: 250rpx;        
+  width: 100%;
+  padding: 20rpx;
+  border: 1rpx solid #eee;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  text-align: left;          
+  vertical-align: top;       
+  line-height: 1.4;       
+}
+.upload-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.uploaded-img {
+  position: relative;
+  width: 150rpx;
+  height: 150rpx;
+}
+.uploaded-img image {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+}
+.uploaded-img icon {
+  position: absolute;
+  top: -10rpx;
+  right: -10rpx;
+  background: #fff;
+  border-radius: 50%;
+}
+.upload-btn {
+  width: 150rpx;
+  height: 150rpx;
+  border: 1rpx dashed #ccc;
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+.upload-text {
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+.picker-content {
+  padding: 20rpx;
+  border: 1rpx solid #eee;
+  border-radius: 10rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 28rpx;
+}
+.publish-btn {
+  background-color: #88c850;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 30rpx;
+  padding: 20rpx;
+  margin-top: 40rpx;
+}

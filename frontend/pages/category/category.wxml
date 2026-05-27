@@ -1,0 +1,70 @@
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient" style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action" bindtap="goBack" style="padding: 0 20rpx; min-width: 80rpx; min-height: 60rpx; display: flex; align-items: center; justify-content: center;">
+      <text class="cuIcon-back text-white" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="content text-white"  style="padding-top: 19rpx;">分类</view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+
+<view style="height: 150px;"></view>
+<scroll-view scroll-y style="margin-top: {{CustomBar}}px; height: calc(100vh - {{CustomBar}}px);">
+  <view class="filter-section" style="position: fixed; top: {{CustomBar}}px; left: 0; right: 0; z-index: 10; background-color: #fff;">
+    <view class="filter-row">
+      <scroll-view scroll-x class="cuisine-scroll" show-scrollbar="{{false}}">
+        <view class="cuisine-item {{selectedCuisine === item.id ? 'active' : ''}}" wx:for="{{cuisines}}" wx:key="id" bindtap="selectCuisine" data-cuisine="{{item.id}}">
+          <text>{{item.name}}</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="filter-tabs">
+      <view class="filter-tab-item {{currentFilterTab === item.id ? 'active' : ''}}" wx:for="{{filterCategories}}" wx:key="id" bindtap="switchFilterTab" data-tab="{{item.id}}">
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+
+    <view class="filter-options">
+      <scroll-view scroll-x class="filter-options-scroll" show-scrollbar="{{false}}">
+        <view class="filter-option-item {{selectedFilters[currentFilterTab].indexOf(item.id) > -1 ? 'selected' : ''}}" wx:for="{{filterOptions[currentFilterTab]}}" wx:key="id" bindtap="toggleFilter" data-type="{{currentFilterTab}}" data-id="{{item.id}}">
+          <text>{{item.name}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view >
+    <view class="cu-card article no-card">
+      <view class="cu-item" wx:if="{{recipes.length > 0}}">
+      </view>
+    </view>
+
+    <view class="cu-list menu-avatar" wx:if="{{recipes.length > 0}}">
+  <view class="cu-item" wx:for="{{recipes}}" wx:key="id" bindtap="onRecipeTap" data-recipe="{{item}}" style="display: flex; align-items: center; padding: 20rpx 30rpx;">
+    <image class="cu-avatar round lg" src="{{item.imageUrl}}" mode="aspectFill" lazy-load="true" style="width: 80rpx; height: 80rpx; border-radius: 50%; flex-shrink: 0; margin-right: 20rpx;"></image>
+    
+    <view style="flex: 1; display: flex; align-items: center; overflow: hidden; margin-left:50px">
+      <text class="text-cut" style="font-size: 32rpx; font-weight: bold; max-width: 200rpx; margin-right: 16rpx;">{{item.title}}</text>
+    </view>
+    
+    <view class="action" style="flex-shrink: 0;">
+      <text class="cuIcon-right text-gray"></text>
+    </view>
+  </view>
+</view>
+
+    <view class="cu-card article no-card" wx:if="{{recipes.length === 0 && !loading}}">
+      <view class="cu-item">
+        <view class="padding flex flex-direction align-center" style="padding-top:100px; height: 400px;">
+          <text class="cuIcon-search text-gray" style="font-size: 120rpx;"></text>
+          <text class="text-gray margin-top">暂无符合条件的食谱</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading-section" wx:if="{{loading}}">
+      <view class="cu-load loading"></view>
+    </view>
+  </view>
+</scroll-view>

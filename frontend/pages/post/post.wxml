@@ -1,0 +1,153 @@
+<view class="cu-custom">
+  <view class="cu-bar fixed custom-nav-gradient shadow" style="height: {{CustomBar}}px; padding-top: {{StatusBar}}px;">
+    <view class="action" bindtap="goBack">
+      <text class="cuIcon-back text-white"></text>
+    </view>
+    <view class="action"></view>
+  </view>
+</view>
+
+<view style="height: {{CustomBar}}px;"></view>
+
+<view class="post-container">
+  <view class="author-section">
+    <view class="author-info" bindtap="goToAuthorHome" data-id="{{postAuthor.userId}}">
+      <image 
+  src="{{postAuthor.avatar || 'https://via.placeholder.com/100x100?text=Avatar'}}" 
+  class="author-avatar" 
+  mode="aspectFill"
+  binderror="onAuthorAvatarError"
+></image>
+      <view class="author-detail">
+        <text class="author-name">{{postAuthor.nickname || '匿名用户'}}</text>
+        <text class="publish-time">{{postInfo.time}}</text>
+      </view>
+    </view>
+    <view wx:if="{{currentUser.userId !== postAuthor.userId}}" class="follow-btn {{postAuthor.isFollowed ? 'followed' : ''}}" bindtap="toggleFollowAuthor">
+      <text>{{postAuthor.isFollowed ? '已关注' : '关注'}}</text>
+    </view>
+  </view>
+
+  <view class="post-media" wx:if="{{swiperList.length > 0}}">
+    <swiper 
+      class="screen-swiper round-dot" 
+      indicator-dots="{{swiperList.length > 1}}" 
+      circular="{{true}}" 
+      autoplay="{{true}}" 
+      interval="5000" 
+      duration="500"
+      bindchange="swiperChange"
+    >
+      <block wx:for="{{swiperList}}" wx:key="id">
+        <swiper-item>
+          <image 
+            src="{{item.url}}" 
+            mode="aspectFill" 
+            class="swiper-img"
+            lazy-load="{{true}}"
+            binderror="onSwiperImageError"
+            data-index="{{index}}"
+          ></image>
+        </swiper-item>
+      </block>
+    </swiper>
+    
+    <view class="page-indicator" wx:if="{{swiperList.length > 1}}">
+      {{currentIndex + 1}}/{{swiperList.length}}
+    </view>
+  </view>
+  
+  <view class="post-text">
+    <text class="title">{{postInfo.title}}</text>
+    <text class="content">{{postInfo.content}}</text>
+  </view>
+
+  <view class="comment-section">
+    <view class="section-title">
+      <text>评论 ({{commentList.length}})</text>
+      <text wx:if="{{!currentUser.isLoggedIn}}" class="login-tip" bindtap="doLogin">登录后可评论</text>
+    </view>
+    
+    <block wx:for="{{commentList}}" wx:key="id">
+      <view class="comment-item">
+        <image 
+  src="{{item.avatar || 'https://via.placeholder.com/100x100?text=User'}}" 
+  class="comment-avatar" 
+  bindtap="goToAuthorHome" 
+  data-id="{{item.userId}}"
+  mode="aspectFill"
+  binderror="onCommentAvatarError"
+  data-index="{{index}}"
+></image>
+        <view class="comment-content">
+          <view class="comment-header">
+            <text class="comment-author" bindtap="goToAuthorHome" data-id="{{item.userId}}">{{item.author}}</text>
+            <text wx:if="{{item.isPostAuthor}}" class="author-tag">作者</text>
+            <text wx:if="{{item.isCommentAuthor}}" class="self-tag">我</text>
+          </view>
+          <text class="comment-text">{{item.content}}</text>
+          <view class="comment-info">
+            <text class="comment-time">{{item.time}}</text>
+            <view class="comment-like" bindtap="likeComment" data-id="{{item.id}}">
+              <text class="cuIcon-like action-icon" style="color: {{item.liked ? '#ff6b6b' : '#999'}};"></text>
+              <text class="like-count">{{item.likeCount}}</text>
+            </view>
+            <view wx:if="{{currentUser.isLoggedIn && item.userId === currentUser.userId}}" class="comment-delete" bindtap="deleteComment" data-id="{{item.id}}">
+              <text class="cuIcon-delete"></text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <view class="no-comment" wx:if="{{commentList.length === 0 && !commentLoadingMore}}">
+      <text class="hh">暂无评论，快来抢沙发～</text>
+    </view>
+    
+    <view class="load-more" wx:if="{{commentList.length > 0}}">
+      <text wx:if="{{commentLoadingMore}}">加载中...</text>
+      <text wx:elif="{{!commentHasMore}}">—— 已经到底了 ——</text>
+      <text wx:else>上拉加载更多</text>
+    </view>
+  </view>
+  <view class="bottom-bar">
+    <view class="input-wrap" bindtap="showCommentInput">
+      <text class="cuIcon-write action-icon"></text>
+      <input 
+        placeholder="{{currentUser.isLoggedIn ? '说点什么...' : '登录后可评论'}}" 
+        class="input" 
+        disabled="{{true}}"
+      ></input>
+    </view>
+
+    <view class="action-group">      
+      <view class="action-item" bindtap="likePost">
+        <text class="{{isLiked ? 'cuIcon-likefill' : 'cuIcon-like'}} action-icon"></text>
+        <text class="count">{{postInfo.likeCount || 0}}</text>
+      </view>
+      <view class="action-item" bindtap="onSharePost">
+        <text class="cuIcon-share action-icon"></text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{showCommentInput}}" class="comment-modal" bindtap="hideCommentInput">
+  <view class="comment-modal-content" catchtap="preventBubble">
+    <view class="comment-modal-header">
+      <text class="comment-modal-title">发表评论</text>
+      <text class="comment-modal-close" bindtap="hideCommentInput">✕</text>
+    </view>
+    <textarea 
+      class="comment-textarea" 
+      placeholder="请输入评论内容..." 
+      value="{{commentContent}}"
+      bindinput="onCommentInput"
+      auto-focus="{{true}}"
+      maxlength="200"
+    ></textarea>
+    <view class="comment-modal-footer">
+      <button class="comment-submit-btn" bindtap="submitComment">发布</button>
+    </view>
+  </view>
+</view>

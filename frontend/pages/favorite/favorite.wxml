@@ -1,0 +1,64 @@
+<view class="cu-custom">
+  <view class="cu-bar fixed custom-nav-gradient shadow" style="height: {{CustomBar}}px; padding-top: {{StatusBar}}px;">
+    <view class="action" bindtap="goBack">
+      <text class="cuIcon-back text-white"></text>
+    </view>
+    <view class="content text-white">我的收藏</view>
+    <view class="action"></view>
+  </view>
+</view>
+
+<view class="padding" style="margin-top: {{CustomBar}}px;">
+  <view class="loading" wx:if="{{loading}}">
+    <view class="cu-load load-modal">
+      <view class="cuIcon-emojifill text-green"></view>
+      <view class="text-gray">加载中...</view>
+    </view>
+  </view>
+  
+  <view class="empty-state" wx:elif="{{list.length === 0}}">
+    <view class="cu-load load-modal">
+      <view class="cuIcon-favorfill text-gray"></view>
+      <view class="text-gray">暂无收藏食谱</view>
+      <button class="cu-btn bg-green light margin-top" bindtap="goBack">返回首页</button>
+    </view>
+  </view>
+  
+  <view class="favorite-list" wx:else>
+    <view 
+      class="bg-white radius margin-bottom"
+      wx:for="{{list}}" 
+      wx:key="recipeId"
+      bindtap="goToRecipe"
+      data-id="{{item.recipeId}}"
+    >
+      <view class="padding flex align-center justify-between">
+        <view class="flex align-center flex-sub">
+          <image 
+            wx:if="{{item.imageUrl}}" 
+            src="{{item.imageUrl}}" 
+            mode="aspectFill" 
+            style="width: 100rpx; height: 100rpx; border-radius: 12rpx; margin-right: 20rpx;"
+          ></image>
+          <view wx:else class="bg-gray" style="width: 100rpx; height: 100rpx; border-radius: 12rpx; margin-right: 20rpx; display: flex; align-items: center; justify-content: center;">
+            <text class="cuIcon-pic text-white" style="font-size: 40rpx;"></text>
+          </view>
+          
+          <text class="text-black text-bold">{{item.title}}</text>
+        </view>
+        
+        <view class="action" catchtap="unfavorite" data-id="{{item.recipeId}}">
+          <text class="cuIcon-favorfill text-red" style="font-size: 40rpx;"></text>
+        </view>
+      </view>
+    </view>
+  
+    <view class="text-center padding" wx:if="{{loadingMore}}">
+      <text class="text-gray">加载中...</text>
+    </view>
+    
+    <view class="text-center padding" wx:elif="{{!hasMore && list.length > 0}}">
+      <text class="text-gray text-sm">没有更多了</text>
+    </view>
+  </view>
+</view>

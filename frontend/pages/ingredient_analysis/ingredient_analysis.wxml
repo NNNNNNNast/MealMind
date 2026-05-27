@@ -1,0 +1,75 @@
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient"
+    style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action">
+      <text class="cuIcon-back text-white" bindtap="goBack" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+<view style="height: {{CustomBar}}px;"></view>
+
+<view class="container" >
+  <view class="text-center margin-bottom-sm" >
+    <text class="title">成分识别</text>
+    <text class="subtitle">拍照识别食材营养成分</text>
+  </view>
+
+  <view class="upload-section">
+    <view class="upload-area" bindtap="chooseImage" wx:if="{{imageslist.length === 0}}">
+      <view class="icon-camera">📷</view>
+      <text>点击拍摄/上传食材照片</text>
+    </view>
+
+    <view class="preview-area" wx:else>
+      <block wx:for="{{imageslist}}" wx:key="id">
+        <view class="image-item">
+          <image src="{{item.url}}" mode="aspectFill" bindtap="previewImage" data-url="{{item.url}}" lazy-load="true"></image>
+          <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+      </block>
+      <view class="add-btn" bindtap="chooseImage" wx:if="{{imageslist.length < 9}}">+</view>
+    </view>
+  </view>
+
+  <view class="action-section">
+    <button class="analyze-btn" bindtap="analyzeIngredients" disabled="{{imageslist.length === 0 || isAnalyzing}}"
+      loading="{{isAnalyzing}}">
+      {{isAnalyzing ? '正在分析...' : '开始识别成分'}}
+    </button>
+  </view>
+
+  <view class="result-section skeleton" wx:if="{{isAnalyzing && !results.length && !analysisResult}}">
+    <view class="result-card">
+      <view class="skeleton-title"></view>
+      <view class="skeleton-content">
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-section" wx:if="{{results.length > 0}}">
+    <view class="result-card">
+      <view class="result-title">🍎 识别到的食材</view>
+      <view class="foods-list">
+        <block wx:for="{{results}}" wx:key="index">
+          <view class="food-item">
+            <text class="food-name">{{item.foods}}</text>
+            <text class="food-freshness">{{item.freshness}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-section" wx:if="{{analysisResult}}">
+    <view class="result-card">
+      <view class="result-title">💡 营养成分</view>
+      <view class="result-content">
+        <rich-text nodes="{{analysisHtml}}" user-select="true"></rich-text>
+      </view>
+    </view>
+  </view>
+</view>

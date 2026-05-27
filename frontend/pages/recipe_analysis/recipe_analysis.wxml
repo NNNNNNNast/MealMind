@@ -1,0 +1,70 @@
+<view class="cu-custom">
+  <view class="cu-bar shadow shadow-lg fixed custom-nav-gradient" style="height: {{CustomBar}}px; display: flex; align-items: center; padding-top: {{StatusBar}}px;box-sizing: border-box;">
+    <view class="action">
+      <text class="cuIcon-back text-white"  bindtap="goBack" style="font-size: 40rpx;"></text>
+    </view>
+    <view class="action" style="width: 100rpx;"></view>
+  </view>
+</view>
+
+<view style="height: {{CustomBar}}px;"></view>
+
+<view class="container" >
+  <view class="text-center margin-bottom-sm" >
+    <text class="title">菜品识别</text>
+    <text class="subtitle">拍照识别菜品，记录饮食日记</text>
+  </view>
+
+  <view class="upload-section">
+    <view class="upload-area" bindtap="chooseImage" wx:if="{{imageslist.length === 0}}">
+      <view class="icon-camera">📷</view>
+      <text>点击拍摄/上传菜品照片</text>
+    </view>
+    
+    <view class="preview-area" wx:else>
+      <block wx:for="{{imageslist}}" wx:key="id">
+        <view class="image-item">
+          <image src="{{item.url}}" mode="aspectFill" bindtap="previewImage" data-url="{{item.url}}" lazy-load="true"></image>
+          <view class="delete-btn" catchtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="action-section">
+    <button class="analyze-btn" bindtap="analyzeIngredients" disabled="{{imageslist.length === 0 || isAnalyzing}}" loading="{{isAnalyzing}}">
+      {{isAnalyzing ? '正在识别...' : '开始识别菜品'}}
+    </button>
+  </view>
+
+  <view class="result-section skeleton" wx:if="{{isAnalyzing && !analysisResult}}">
+    <view class="result-card">
+      <view class="result-header">
+        <view class="skeleton-title"></view>
+        <view class="skeleton-btn"></view>
+      </view>
+      <view class="skeleton-content">
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-section" wx:if="{{analysisResult}}">
+    <view class="result-card">
+      <view class="result-header">
+        <view class="result-title">🍽️ 识别结果</view>
+        <view class="copy-btn" bindtap="copyResult">📋 复制</view>
+      </view>
+      <view class="result-content">
+        <text user-select="true" decode="true">{{analysisResult}}</text>
+      </view>
+    </view>
+    <view class="save-section">
+      <button class="save-btn" bind:tap="saveRecord" disabled="{{isSaving}}" loading="{{isSaving}}">
+        {{isSaving ? '保存中...' : '💾 保存记录'}}
+      </button>
+    </view>
+  </view>
+</view>
